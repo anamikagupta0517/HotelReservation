@@ -1,7 +1,6 @@
 package test;
 
-import Services.CustomerService;
-import model.Customer;
+import Service.CustomerService;
 
 public class Driver {
     public static void main(String[] args) {

@@ -1,9 +1,8 @@
-package Services;
+package Service;
 
 import model.Customer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CustomerService {
     private static Set<Customer> customers = new HashSet<>();

@@ -20,9 +20,9 @@ public class DataValidator {
             return false;
         } else if(isInteger(value)){
             return false;
-        } else if(value.length() > 3) {
+        } else if(value.length() > 1) {
             return false;
-        } else if(value.equalsIgnoreCase("y") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("n") || value.equalsIgnoreCase("no")) {
+        } else if(value.equalsIgnoreCase("y") || value.equalsIgnoreCase("n")) {
             return true;
         } else {
             return false;

@@ -22,6 +22,6 @@ public class Customer {
 
     @Override
     public String toString(){
-        return String.format("First Name: %s Last Name:%s email: %s", this.firstName, this.lastName, this.email);
+        return String.format("First Name: %s Last Name: %s email: %s", this.firstName, this.lastName, this.email);
     }
 }

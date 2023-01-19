@@ -36,10 +36,12 @@ public class Room implements IRoom {
         this.price = price;
     }
 
-
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
 
     @Override
     public String toString() {
-        return (String.format("Room Number: %s %d bed room Price: %d ", roomNumber, roomType.toString(), price));
+        return (String.format("Room Number: %s %s bed room Price: $%,.2f ", roomNumber, roomType.toString(), price));
     }
 }
