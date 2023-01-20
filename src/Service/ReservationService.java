@@ -23,8 +23,8 @@ public class ReservationService {
 
     public static IRoom getARoom(String roomNumber) {
         IRoom foundRoom = null;
-        for(IRoom room : rooms) {
-            if(room.getRoomNumber().equalsIgnoreCase(roomNumber)) {
+        for (IRoom room : rooms) {
+            if (room.getRoomNumber().equalsIgnoreCase(roomNumber)) {
                 foundRoom = room;
                 break;
             }
@@ -40,18 +40,33 @@ public class ReservationService {
 
     public static Collection<IRoom> findRooms(Date checkinDate, Date checkoutDate) {
         Collection<IRoom> availableRooms = new ArrayList<>();
-        for(Reservation res : reservations) {
-            if(checkinDate.after(res.getCheckoutDate()) || checkoutDate.before(res.getCheckinDate())) {
-                availableRooms.add(res.getRoom());
-            }
+//        for(Reservation res : reservations) {
+//            if(checkinDate.after(res.getCheckoutDate()) || checkoutDate.before(res.getCheckinDate())) {
+//                availableRooms.add(res.getRoom());
+//            }
+//        }
+
+        for (IRoom room : rooms) {
+            if (reservations.size() > 0) {
+                for (Reservation res : reservations) {
+                    if (room.getRoomNumber().equalsIgnoreCase(res.getRoom().getRoomNumber())) {
+                        //CHeck if checkInDate and checkoutDate is not as requested
+                        if (checkinDate.after(res.getCheckoutDate()) || checkoutDate.before(res.getCheckinDate())) {
+                            availableRooms.add(room);
+                        }
+                    } else {
+                        availableRooms.add(room);
+                    }
+                }
+            } else availableRooms.add(room);
         }
         return availableRooms;
     }
 
     public static Collection<Reservation> getCustomerReservation(Customer customer) {
         Collection<Reservation> customerReservations = new ArrayList<>();
-        for(Reservation res : reservations) {
-            if(res.getCustomer().getEmail().equalsIgnoreCase(customer.getEmail())){
+        for (Reservation res : reservations) {
+            if (res.getCustomer().getEmail().equalsIgnoreCase(customer.getEmail())) {
                 customerReservations.add(res);
             }
         }
@@ -59,8 +74,12 @@ public class ReservationService {
     }
 
     public static void printAllReservations() {
-        for(Reservation res : reservations) {
-            System.out.println(res.toString());
+        if (reservations.size() > 0) {
+            for (Reservation res : reservations) {
+                System.out.println(res.toString());
+            }
+        } else {
+            System.out.println("No reservations found.......");
         }
     }
 

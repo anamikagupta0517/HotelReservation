@@ -69,6 +69,9 @@ public class AdminMenu {
                             if (yesOrNo.equalsIgnoreCase("n")) {
                                 wantToAddMore = false;
                             }
+                        } else {
+                            System.out.println("Error occurred: Invalid option, only \"y\" or \"n\" is allowed");
+                            wantToAddMore = false;
                         }
 
                     } while (wantToAddMore);

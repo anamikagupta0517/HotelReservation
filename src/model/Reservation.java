@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Reservation {
@@ -48,7 +49,12 @@ public class Reservation {
     }
 
     @Override
-    public String toString(){
-        return String.format("Customer Details: %s \n Room Details: %s, Check-in Date: %s, Checkout Date: %s", customer.toString(), room.toString(), checkinDate.toString(), checkoutDate.toString());
+    public String toString() {
+        return String.format("Customer Details: %s \n%s per night, \nCheck-in Date: %s, Checkout Date: %s \nTotal price : $%,.2f",
+                customer.toString(),
+                room.toString(),
+                new SimpleDateFormat("MM-dd-yyyy").format(checkinDate),
+                new SimpleDateFormat("MM-dd-yyyy").format(checkoutDate),
+                room.getRoomPrice() * (int) (checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
     }
 }
