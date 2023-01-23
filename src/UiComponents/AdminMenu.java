@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class AdminMenu {
 
     public static void loadAdminMenu() {
-        int optionSelection;
+        String optionSelection;
         boolean cont = true;
 
         Scanner in = new Scanner(System.in);
@@ -22,29 +22,29 @@ public class AdminMenu {
         do {
             AdminMenu.printAdminMenu();
 
-            optionSelection = in.nextInt();
+            optionSelection = in.next();
 
             switch (optionSelection) {
-                case 1:
-                    if(CustomerService.getAllCustomers().size() == 0) {
+                case "1":
+                    if (CustomerService.getAllCustomers().size() == 0) {
                         System.out.println("No customers found in the system.");
                     }
                     for (Customer customer : CustomerService.getAllCustomers()) {
                         System.out.println(customer.toString());
                     }
                     break;
-                case 2:
-                    if(ReservationService.getAllRooms().size() == 0) {
+                case "2":
+                    if (ReservationService.getAllRooms().size() == 0) {
                         System.out.println("No rooms found in the system.");
                     }
                     for (IRoom room : ReservationService.getAllRooms()) {
                         System.out.println(room.toString());
                     }
                     break;
-                case 3:
+                case "3":
                     ReservationService.printAllReservations();
                     break;
-                case 4:
+                case "4":
                     boolean wantToAddMore = true;
                     do {
                         System.out.println("Enter room number:");
@@ -76,13 +76,12 @@ public class AdminMenu {
 
                     } while (wantToAddMore);
                     break;
-                case 5:
+                case "5":
                     System.out.println("-------- Going back to main menu ----------");
                     cont = false;
                     break;
                 default:
-                    System.out.println("Invalid number, please try again. Below are the options.");
-                    AdminMenu.printAdminMenu();
+                    System.out.println("Invalid option, please try again. Below are the options.");
             }
         } while (cont);
 

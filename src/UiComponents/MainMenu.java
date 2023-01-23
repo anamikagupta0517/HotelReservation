@@ -17,7 +17,7 @@ public class MainMenu {
     static Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
-        int optionSelection;
+        String optionSelection;
         boolean cont = true;
 
 
@@ -25,10 +25,10 @@ public class MainMenu {
 
         do {
             MainMenu.printOptions();
-            optionSelection = in.nextInt();
+            optionSelection = in.next();
 
             switch (optionSelection) {
-                case 1:
+                case "1":
                     //Find and reserve a room
                     try {
                         System.out.println("Enter CheckIn Date mm/dd/yyyy example 02/01/2023");
@@ -37,7 +37,7 @@ public class MainMenu {
                         Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(in.next());
                         if (checkinDate.before(checkoutDate)) {
                             Collection<IRoom> availableRooms = ReservationService.findRooms(checkinDate, checkoutDate);
-                            if(availableRooms.size() > 0) {
+                            if (availableRooms.size() > 0) {
                                 System.out.println("Below rooms are available for you to reserve.");
                                 for (IRoom room : availableRooms) {
                                     System.out.println(room.toString());
@@ -82,7 +82,7 @@ public class MainMenu {
                         System.out.println("Exception occurred, description: " + ex.getMessage());
                     }
                     break;
-                case 2:
+                case "2":
                     //See my reservation
                     System.out.println("Please enter your email format: abc@xyz.com");
                     String email = in.next();
@@ -90,7 +90,7 @@ public class MainMenu {
                         Customer cust = CustomerService.getCustomer(email);
                         if (cust != null) {
                             Collection<Reservation> reservations = ReservationService.getCustomerReservation(cust);
-                            if(reservations.size() > 0) {
+                            if (reservations.size() > 0) {
                                 for (Reservation res : reservations) {
                                     System.out.println(res.toString());
                                 }
@@ -104,22 +104,21 @@ public class MainMenu {
                         System.out.println("Error occurred: Invalid email format.");
                     }
                     break;
-                case 3:
+                case "3":
                     //Create an account
                     createAccount();
                     break;
-                case 4:
+                case "4":
                     //Go to Admin menu
                     AdminMenu.loadAdminMenu();
                     break;
-                case 5:
+                case "5":
                     //Exit the application
                     System.out.println("Good Bye!!! Thank you for your visit. Hope you see you again soon.");
                     cont = false;
                     break;
                 default:
-                    System.out.println("Invalid number, please try again. Below are the options.");
-                    MainMenu.printOptions();
+                    System.out.println("Invalid option, please try again. Below are the options.");
             }
         } while (cont);
 
