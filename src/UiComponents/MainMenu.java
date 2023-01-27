@@ -68,7 +68,7 @@ public class MainMenu {
                                 IRoom room = ReservationService.getARoom(roomNum);
                                 if (customer != null && room != null) {
                                     Reservation reservation = ReservationService.reserveARoom(customer, room, checkinDate, checkoutDate);
-                                    System.out.println(reservation.toString());
+                                    System.out.println(reservation);
                                 } else {
                                     System.out.println("Something went wrong, Please contact service desk.");
                                 }

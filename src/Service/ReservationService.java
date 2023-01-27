@@ -5,13 +5,11 @@ import model.IRoom;
 import model.Reservation;
 import model.Room;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 public class ReservationService {
-    static Collection<Reservation> reservations = new ArrayList<>();
-    static Collection<IRoom> rooms = new ArrayList<>();
+    static Set<Reservation> reservations = new HashSet<>();
+    static Set<IRoom> rooms = new HashSet<>();
 
     public static Collection<IRoom> getAllRooms() {
         return rooms;
@@ -33,32 +31,38 @@ public class ReservationService {
     }
 
     public static Reservation reserveARoom(Customer customer, IRoom room, Date checkinDate, Date checkoutDate) {
-        Reservation res = new Reservation(customer, room, checkinDate, checkoutDate);
-        reservations.add(res);
-        return res;
+        boolean canReserve = true;
+        Reservation newRes = new Reservation(customer, room, checkinDate, checkoutDate);
+        for (Reservation res : reservations) {
+            if (res.getRoom().getRoomNumber().equalsIgnoreCase(room.getRoomNumber())) {
+                if (checkinDate.compareTo(res.getCheckinDate()) >= 0 && ) { //If check in date is on or after existing reservation check in date
+                    canReserve = false;
+                } else if()
+            }
+        }
+        reservations.add(newRes);
+        return newRes;
     }
 
     public static Collection<IRoom> findRooms(Date checkinDate, Date checkoutDate) {
         Collection<IRoom> availableRooms = new ArrayList<>();
-//        for(Reservation res : reservations) {
-//            if(checkinDate.after(res.getCheckoutDate()) || checkoutDate.before(res.getCheckinDate())) {
-//                availableRooms.add(res.getRoom());
-//            }
-//        }
-
-        for (IRoom room : rooms) {
-            if (reservations.size() > 0) {
-                for (Reservation res : reservations) {
-                    if (room.getRoomNumber().equalsIgnoreCase(res.getRoom().getRoomNumber())) {
-                        //CHeck if checkInDate and checkoutDate is not as requested
-                        if (checkinDate.after(res.getCheckoutDate()) || checkoutDate.before(res.getCheckinDate())) {
+        if (checkinDate.compareTo(checkoutDate) <= 0) {
+            System.out.println("Check out date must be after check in date.");
+        } else {
+            for (IRoom room : rooms) {
+                if (reservations.size() > 0) {
+                    for (Reservation res : reservations) {
+                        if (room.getRoomNumber().equalsIgnoreCase(res.getRoom().getRoomNumber())) {
+                            //CHeck if checkInDate and checkoutDate is not as requested
+                            if (checkinDate.after(res.getCheckoutDate()) || checkoutDate.before(res.getCheckinDate())) {
+                                availableRooms.add(room);
+                            }
+                        } else {
                             availableRooms.add(room);
                         }
-                    } else {
-                        availableRooms.add(room);
                     }
-                }
-            } else availableRooms.add(room);
+                } else availableRooms.add(room);
+            }
         }
         return availableRooms;
     }

@@ -3,6 +3,8 @@ package Resources;
 import java.util.regex.Pattern;
 
 public class DataValidator {
+    private final static String pattern = "^(.+)@(\\S+)$";
+
     public static boolean isInteger(String value) {
         if(value == null) {
             return false;
@@ -30,7 +32,6 @@ public class DataValidator {
     }
 
     public static boolean isEmailValid(String email) {
-        String pattern = "^(.+)@(\\S+)$";
         return Pattern.compile(pattern)
                 .matcher(email)
                 .matches();
