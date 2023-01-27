@@ -68,7 +68,11 @@ public class MainMenu {
                                 IRoom room = ReservationService.getARoom(roomNum);
                                 if (customer != null && room != null) {
                                     Reservation reservation = ReservationService.reserveARoom(customer, room, checkinDate, checkoutDate);
-                                    System.out.println(reservation);
+                                    if(reservation == null) {
+                                        System.out.println("I am sorry, We could not reserve this room for you. It has a conflicting reservation.");
+                                    } else {
+                                        System.out.println(reservation);
+                                    }
                                 } else {
                                     System.out.println("Something went wrong, Please contact service desk.");
                                 }

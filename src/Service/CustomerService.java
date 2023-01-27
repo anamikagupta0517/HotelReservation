@@ -7,6 +7,15 @@ import java.util.*;
 public class CustomerService {
     private static Set<Customer> customers = new HashSet<>();
 
+    private static CustomerService customerServiceInstance = null;
+
+    public static CustomerService getInstance(){
+        if (customerServiceInstance == null) {
+            customerServiceInstance = new CustomerService();
+        }
+        return customerServiceInstance;
+    }
+
     public static void addCustomer(String firstName, String lastName, String email) throws Exception {
         if (isEmailDuplicate(email)) {
             throw new Exception("Duplicate email exception, " + email + " already exists.");
