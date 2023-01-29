@@ -50,7 +50,7 @@ public class HotelResource {
         return custReservations;
     }
 
-    public static Collection<IRoom> findARoom(Date checkinDate, Date checkoutDate) {
+    public static Collection<IRoom> findARoom(Date checkinDate, Date checkoutDate) throws Exception{
         return ReservationService.findRooms(checkinDate, checkoutDate);
     }
 

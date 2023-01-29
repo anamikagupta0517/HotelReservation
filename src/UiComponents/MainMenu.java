@@ -19,7 +19,8 @@ public class MainMenu {
     public static void main(String[] args) {
         String optionSelection;
         boolean cont = true;
-
+        ReservationService reservationService = ReservationService.getInstance();
+        CustomerService customerService = CustomerService.getInstance();
 
         System.out.println("Welcome to Ana's Hotel Reservation Application");
 
@@ -36,14 +37,23 @@ public class MainMenu {
                         System.out.println("Enter CheckOut Date mm/dd/yyyy example 02/01/2023");
                         Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(in.next());
                         if (checkinDate.before(checkoutDate)) {
-                            Collection<IRoom> availableRooms = ReservationService.findRooms(checkinDate, checkoutDate);
+                            Collection<IRoom> availableRooms = reservationService.findRooms(checkinDate, checkoutDate);
                             if (availableRooms.size() > 0) {
-                                System.out.println("Below rooms are available for you to reserve.");
-                                for (IRoom room : availableRooms) {
-                                    System.out.println(room.toString());
-                                }
+                                printAvailableRooms(availableRooms);
                             } else {
-                                System.out.println("We are sorry, no rooms are available right now for your dates.");
+                                checkinDate = new Date(checkinDate.getTime() + (1000 * 60 * 60 * 24 * 7));
+                                checkoutDate = new Date(checkoutDate.getTime() + (1000 * 60 * 60 * 24 * 7));
+                                System.out.println("Searching rooms after a week, for checkin date:"
+                                        + new SimpleDateFormat("MM/dd/yyyy").format(checkinDate)
+                                        + " and checkout date:"
+                                        + new SimpleDateFormat("MM/dd/yyyy").format(checkoutDate));
+                                availableRooms = reservationService.findRooms(checkinDate, checkoutDate);
+                                if (availableRooms.size() > 0) {
+                                    printAvailableRooms(availableRooms);
+                                } else {
+                                    System.out.println("We are sorry, no rooms are available right now.");
+                                    break;
+                                }
                             }
                             System.out.println("\n");
                             System.out.println("Would you like to book a room? y/n");
@@ -56,7 +66,7 @@ public class MainMenu {
                                     System.out.println("Enter your email format: name@domain.com");
                                     String email = in.next();
                                     if (DataValidator.isEmailValid(email)) {
-                                        customer = CustomerService.getCustomer(email);
+                                        customer = customerService.getCustomer(email);
                                     } else {
                                         System.out.println("Invalid/Incorrect email provided. Please try again.");
                                     }
@@ -65,10 +75,10 @@ public class MainMenu {
                                 }
                                 System.out.println("What room number would you like to reserve");
                                 String roomNum = in.next();
-                                IRoom room = ReservationService.getARoom(roomNum);
+                                IRoom room = reservationService.getARoom(roomNum);
                                 if (customer != null && room != null) {
-                                    Reservation reservation = ReservationService.reserveARoom(customer, room, checkinDate, checkoutDate);
-                                    if(reservation == null) {
+                                    Reservation reservation = reservationService.reserveARoom(customer, room, checkinDate, checkoutDate);
+                                    if (reservation == null) {
                                         System.out.println("I am sorry, We could not reserve this room for you. It has a conflicting reservation.");
                                     } else {
                                         System.out.println(reservation);
@@ -91,9 +101,9 @@ public class MainMenu {
                     System.out.println("Please enter your email format: abc@xyz.com");
                     String email = in.next();
                     if (DataValidator.isEmailValid(email)) {
-                        Customer cust = CustomerService.getCustomer(email);
+                        Customer cust = customerService.getCustomer(email);
                         if (cust != null) {
-                            Collection<Reservation> reservations = ReservationService.getCustomerReservation(cust);
+                            Collection<Reservation> reservations = reservationService.getCustomerReservation(cust);
                             if (reservations.size() > 0) {
                                 for (Reservation res : reservations) {
                                     System.out.println(res.toString());
@@ -130,6 +140,7 @@ public class MainMenu {
     }
 
     private static Customer createAccount() {
+        CustomerService customerService = CustomerService.getInstance();
         System.out.println("Please enter your first name:");
         String firstName = in.next();
         System.out.println("Please enter your last name:");
@@ -137,11 +148,11 @@ public class MainMenu {
         System.out.println("Please enter your email:");
         String email = in.next();
         try {
-            CustomerService.addCustomer(firstName, lastName, email);
+            customerService.addCustomer(firstName, lastName, email);
         } catch (Exception ex) {
             System.out.println("Couldn't create account due to exception: " + ex.getMessage());
         }
-        return CustomerService.getCustomer(email);
+        return customerService.getCustomer(email);
     }
 
     private static void printOptions() {
@@ -153,6 +164,13 @@ public class MainMenu {
         System.out.println("5. Exit");
         System.out.println("=============================================");
         System.out.println("Please select a number for menu option");
+    }
+
+    private static void printAvailableRooms(Collection<IRoom> rooms) {
+        System.out.println("Below rooms are available for you to reserve.");
+        for (IRoom room : rooms) {
+            System.out.println(room.toString());
+        }
     }
 
 

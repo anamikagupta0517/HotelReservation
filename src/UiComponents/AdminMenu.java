@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class AdminMenu {
 
     public static void loadAdminMenu() {
+        CustomerService customerService = CustomerService.getInstance();
         String optionSelection;
         boolean cont = true;
 
@@ -26,10 +27,10 @@ public class AdminMenu {
 
             switch (optionSelection) {
                 case "1":
-                    if (CustomerService.getAllCustomers().size() == 0) {
+                    if (customerService.getAllCustomers().size() == 0) {
                         System.out.println("No customers found in the system.");
                     }
-                    for (Customer customer : CustomerService.getAllCustomers()) {
+                    for (Customer customer : customerService.getAllCustomers()) {
                         System.out.println(customer.toString());
                     }
                     break;
